@@ -1,4 +1,50 @@
+definitions:
+  controllers.Uploader:
+    properties:
+      os:
+        type: string
+      plugin_id:
+        type: string
+      version:
+        type: string
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /upload:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Recieve plugins's binary and metadata from Gitlab CI
+      parameters:
+      - description: plugin lib (.so, .dll or .app)
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: plugin version, ex. 1.0.1
+        in: header
+        name: --VERSION
+        required: true
+        type: string
+      - description: platform - linux, windows or macos
+        in: header
+        name: --OS
+        required: true
+        type: string
+      - description: id - com.pulse.641.nfe
+        in: header
+        name: --PLUGIN_ID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/controllers.Uploader'
+      summary: Upload plugin
+      tags:
+      - sync
 swagger: "2.0"
