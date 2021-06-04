@@ -11,6 +11,21 @@ definitions:
 info:
   contact: {}
 paths:
+  /:
+    get:
+      description: Retrieve list plugin with all versions
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/controllers.Uploader'
+            type: array
+      summary: List all plugins
+      tags:
+      - sync
   /upload:
     post:
       consumes:

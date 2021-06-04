@@ -24,6 +24,29 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/": {
+            "get": {
+                "description": "Retrieve list plugin with all versions",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sync"
+                ],
+                "summary": "List all plugins",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/controllers.Uploader"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/upload": {
             "post": {
                 "description": "Recieve plugins's binary and metadata from Gitlab CI",
