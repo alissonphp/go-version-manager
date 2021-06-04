@@ -1,10 +1,13 @@
 package main
 
 import (
+	"flag"
 	"github.com/alisson/go-version-manager/controllers"
+	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
+	"time"
 )
 
 // @title gmkernel plugins sync
@@ -22,11 +25,25 @@ import (
 // UpServer @host localhost:8000
 // @BasePath /
 func UpServer()  {
-	http.HandleFunc("/summary", controllers.Index)
-	http.HandleFunc("/upload", controllers.Upload)
-	http.HandleFunc("/swagger/", httpSwagger.WrapHandler)
 
-	err := http.ListenAndServe(":8000", nil)
+	var dir string
+	flag.StringVar(&dir, "dir", "./download", "the directory to serve plugins files")
+	flag.Parse()
+
+	r := mux.NewRouter()
+	r.HandleFunc("/", controllers.Index).Methods("GET")
+	r.HandleFunc("/upload", controllers.Upload).Methods("POST")
+	r.PathPrefix("/download/").Handler(http.StripPrefix("/download/", http.FileServer(http.Dir(dir))))
+	r.PathPrefix("/docs/").Handler(httpSwagger.WrapHandler)
+
+	srv := &http.Server{
+		Handler:      r,
+		Addr:         ":8000",
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+
+	err := srv.ListenAndServe()
 	if err != nil {
 		log.Fatal(err)
 	}
