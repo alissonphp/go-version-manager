@@ -3,6 +3,8 @@ definitions:
     properties:
       os:
         type: string
+      path:
+        type: string
       plugin_id:
         type: string
       version:
@@ -26,7 +28,7 @@ paths:
       summary: List all plugins
       tags:
       - sync
-  /upload:
+  /upload/:
     post:
       consumes:
       - multipart/form-data

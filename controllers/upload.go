@@ -6,6 +6,7 @@ import (
 	_ "github.com/alisson/go-version-manager/docs"
 	"github.com/alisson/go-version-manager/utils"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 )
@@ -46,21 +47,12 @@ func handler(r *http.Request) *Uploader {
 // @Param --OS header string true "platform - linux, windows or macos"
 // @Param --PLUGIN_ID header string true "id - com.pulse.641.nfe"
 // @Success 200 {object} Uploader
-// @Router /upload [post]
+// @Router /upload/ [post]
 func Upload(w http.ResponseWriter, r *http.Request)  {
 	r.ParseMultipartForm(8 << 20)
 
-	file, h, err := r.FormFile("file")
-	if err != nil {
-		fmt.Println("error retrieving file")
-		return
-	}
-
+	file, h, _ := r.FormFile("file")
 	defer file.Close()
-
-	fmt.Printf("Uploaded File: %+v\n", h.Filename)
-	fmt.Printf("File Size: %+v\n", h.Size)
-	fmt.Printf("MIME Header: %+v\n", h.Header)
 
 	dst, err := os.Create(handler(r).Path + h.Filename)
 	defer dst.Close()
@@ -80,4 +72,16 @@ func Upload(w http.ResponseWriter, r *http.Request)  {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	writeJsonFile(handler(r), h.Filename)
+}
+
+func writeJsonFile(u *Uploader, name string)  {
+
+	var filePath = u.Path + "infos.json"
+	u.Path = u.Path + name
+
+	file, _ := json.MarshalIndent(u, "", " ")
+	_ = ioutil.WriteFile(filePath, file, 0644)
+
 }

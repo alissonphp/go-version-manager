@@ -47,7 +47,7 @@ var doc = `{
                 }
             }
         },
-        "/upload": {
+        "/upload/": {
             "post": {
                 "description": "Recieve plugins's binary and metadata from Gitlab CI",
                 "consumes": [
@@ -106,6 +106,9 @@ var doc = `{
             "type": "object",
             "properties": {
                 "os": {
+                    "type": "string"
+                },
+                "path": {
                     "type": "string"
                 },
                 "plugin_id": {

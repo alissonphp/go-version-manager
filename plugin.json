@@ -1,0 +1,6 @@
+{
+ "version": "1.0.0",
+ "os": "linux",
+ "plugin_id": "teste",
+ "path": "./download/plugins/teste/1.0.0/linux/"
+}
