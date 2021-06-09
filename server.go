@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/alisson/go-version-manager/controllers"
+	"github.com/alisson/go-version-manager/utils"
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
@@ -32,9 +33,12 @@ func UpServer()  {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", controllers.Index).Methods("GET")
-	r.HandleFunc("/upload", controllers.Upload).Methods("POST")
 	r.PathPrefix("/download/").Handler(http.StripPrefix("/download/", http.FileServer(http.Dir(dir))))
 	r.PathPrefix("/docs/").Handler(httpSwagger.WrapHandler)
+
+	s := r.PathPrefix("/upload").Subrouter()
+	s.HandleFunc("/", controllers.Upload).Methods("POST")
+	s.Use(utils.MimeTypeChecker)
 
 	srv := &http.Server{
 		Handler:      r,
