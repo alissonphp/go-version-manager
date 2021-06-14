@@ -2,12 +2,14 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/alisson/go-version-manager/controllers"
-	"github.com/alisson/go-version-manager/utils"
+	"github.com/alisson/go-version-manager/utilities"
 	"github.com/gorilla/mux"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -26,10 +28,10 @@ import (
 // UpServer @host localhost:8000
 // @BasePath /
 func UpServer()  {
-
 	var dir string
 	flag.StringVar(&dir, "dir", "./download", "the directory to serve plugins files")
 	flag.Parse()
+
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", controllers.Index).Methods("GET")
@@ -38,11 +40,11 @@ func UpServer()  {
 
 	s := r.PathPrefix("/upload").Subrouter()
 	s.HandleFunc("/", controllers.Upload).Methods("POST")
-	s.Use(utils.MimeTypeChecker)
+	s.Use(utilities.MimeTypeChecker)
 
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         ":8000",
+		Addr:         checkEnv(),
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
@@ -51,4 +53,23 @@ func UpServer()  {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func checkEnv() string {
+	var server = ""
+	if os.Getenv("HOST") != "" && os.Getenv("PORT") != "" {
+		server = fmt.Sprintf("%s:%s", os.Getenv("HOST"), os.Getenv("PORT"))
+		return server
+	}
+
+	err := os.Setenv("HOST", "localhost")
+	if err != nil {
+		return ""
+	}
+	err = os.Setenv("PORT", "8000")
+	if err != nil {
+		return ""
+	}
+
+	return checkEnv()
 }

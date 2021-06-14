@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	_ "github.com/alisson/go-version-manager/docs"
-	"github.com/alisson/go-version-manager/utils"
+	"github.com/alisson/go-version-manager/utilities"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -27,7 +27,7 @@ func handler(r *http.Request) *Uploader {
 		PluginId: r.Header.Get("--PLUGIN_ID"),
 	}
 
-	if err := utils.MakeDir(fmt.Sprintf("./download/plugins/%s/%s/%s", infos.PluginId, infos.Version, infos.Os)); err != nil {
+	if err := utilities.MakeDir(fmt.Sprintf("./download/plugins/%s/%s/%s", infos.PluginId, infos.Version, infos.Os)); err != nil {
 		panic(err)
 	}
 
