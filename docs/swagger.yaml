@@ -1,3 +1,4 @@
+basePath: /
 definitions:
   controllers.Uploader:
     properties:
@@ -11,7 +12,17 @@ definitions:
         type: string
     type: object
 info:
-  contact: {}
+  contact:
+    email: engenharia@grupomateus.com.br
+    name: Pulse | Software Engineer
+    url: https://engenharia.pulse.io
+  description: Service to upload and syncronize plugins to gmkernel flow
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: gmkernel plugins sync
+  version: "0.1"
 paths:
   /:
     get:

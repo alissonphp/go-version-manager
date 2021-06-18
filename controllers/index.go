@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/alisson/go-version-manager/utilities"
+	version2 "github.com/hashicorp/go-version"
 	"net/http"
+	"sort"
 	"strings"
 )
 
@@ -40,7 +42,7 @@ func Index(w http.ResponseWriter, r *http.Request)  {
 
 	sum := Summary{ UpdatedAt: "2021-06-14 16:04:16" }
 	for _, p := range utilities.ReadListDir("./download/plugins") {
-		var versions = getPluginVersions(p.Name())
+		var versions = getSortedPluginVersions(p.Name())
 		sum.Plugins = append(sum.Plugins, Plugin{
 			ID: p.Name(),
 			Latest: getLatestPluginVersion(versions),
@@ -57,18 +59,6 @@ func Index(w http.ResponseWriter, r *http.Request)  {
 
 }
 
-func getPluginVersions(pluginId string) []Version  {
-	var versions []Version
-
-	for _, v := range utilities.ReadListDir("./download/plugins/" + pluginId) {
-		versions = append(versions, Version{
-			Number: v.Name(),
-			Os: getOsList(pluginId, v.Name()),
-		})
-	}
-
-	return versions
-}
 func getOsList(pluginId string, version string) []Os  {
 	var os []Os
 	var path = "./download/plugins/" + pluginId + "/" + version
@@ -84,6 +74,33 @@ func getOsList(pluginId string, version string) []Os  {
 func getBinaryPathFile(path string, os string) string {
 	 file := utilities.ReadListDir(path + "/" + os)[0]
 	 return fmt.Sprintf("http://localhost:8000%s/%s/%s", strings.Replace(path, "./download", "/download", 1), os, file.Name())
+}
+
+func getSortedPluginVersions(pluginId string) []Version {
+	var path = "./download/plugins/" + pluginId
+	versionsRaw := utilities.ReadListDir(path)
+	versions := make([]*version2.Version, len(versionsRaw))
+
+	for i, raw := range versionsRaw {
+		v, _ := version2.NewVersion(raw.Name())
+		versions[i] = v
+	}
+
+	sort.Sort(version2.Collection(versions))
+	return getVersionsObject(pluginId, versions)
+}
+
+func getVersionsObject(pluginId string, sorted []*version2.Version) []Version  {
+	var versions []Version
+
+	for _, v := range sorted {
+		versions = append(versions, Version{
+			Number: v.String(),
+			Os: getOsList(pluginId, v.String()),
+		})
+	}
+
+	return versions
 }
 
 func getLatestPluginVersion(versions []Version) Version  {

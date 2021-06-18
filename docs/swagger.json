@@ -1,8 +1,21 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "description": "Service to upload and syncronize plugins to gmkernel flow",
+        "title": "gmkernel plugins sync",
+        "termsOfService": "http://swagger.io/terms/",
+        "contact": {
+            "name": "Pulse | Software Engineer",
+            "url": "https://engenharia.pulse.io",
+            "email": "engenharia@grupomateus.com.br"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "0.1"
     },
+    "basePath": "/",
     "paths": {
         "/": {
             "get": {
