@@ -33,7 +33,7 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/": {
+        "/summary": {
             "get": {
                 "description": "Retrieve list plugin with all versions",
                 "produces": [
@@ -49,7 +49,7 @@ var doc = `{
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/controllers.Uploader"
+                                "$ref": "#/definitions/controllers.Summary"
                             }
                         }
                     }
@@ -111,6 +111,48 @@ var doc = `{
         }
     },
     "definitions": {
+        "controllers.Os": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.Plugin": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "latest": {
+                    "$ref": "#/definitions/controllers.Version"
+                },
+                "versions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Version"
+                    }
+                }
+            }
+        },
+        "controllers.Summary": {
+            "type": "object",
+            "properties": {
+                "plugins": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Plugin"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.Uploader": {
             "type": "object",
             "properties": {
@@ -125,6 +167,20 @@ var doc = `{
                 },
                 "version": {
                     "type": "string"
+                }
+            }
+        },
+        "controllers.Version": {
+            "type": "object",
+            "properties": {
+                "number": {
+                    "type": "string"
+                },
+                "os": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Os"
+                    }
                 }
             }
         }
@@ -142,7 +198,7 @@ type swaggerInfo struct {
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
-	Version:     "0.1",
+	Version:     "1.0.1",
 	Host:        "",
 	BasePath:    "/",
 	Schemes:     []string{},

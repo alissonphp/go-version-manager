@@ -13,11 +13,11 @@
             "name": "Apache 2.0",
             "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version": "0.1"
+        "version": "1.0.1"
     },
     "basePath": "/",
     "paths": {
-        "/": {
+        "/summary": {
             "get": {
                 "description": "Retrieve list plugin with all versions",
                 "produces": [
@@ -33,7 +33,7 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/controllers.Uploader"
+                                "$ref": "#/definitions/controllers.Summary"
                             }
                         }
                     }
@@ -95,6 +95,48 @@
         }
     },
     "definitions": {
+        "controllers.Os": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "controllers.Plugin": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "latest": {
+                    "$ref": "#/definitions/controllers.Version"
+                },
+                "versions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Version"
+                    }
+                }
+            }
+        },
+        "controllers.Summary": {
+            "type": "object",
+            "properties": {
+                "plugins": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Plugin"
+                    }
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "controllers.Uploader": {
             "type": "object",
             "properties": {
@@ -109,6 +151,20 @@
                 },
                 "version": {
                     "type": "string"
+                }
+            }
+        },
+        "controllers.Version": {
+            "type": "object",
+            "properties": {
+                "number": {
+                    "type": "string"
+                },
+                "os": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/controllers.Os"
+                    }
                 }
             }
         }
