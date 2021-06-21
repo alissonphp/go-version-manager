@@ -11,7 +11,7 @@ func MimeTypeChecker(next http.Handler) http.Handler  {
 		}
 
 		if h.Header.Get("Content-Type")  != "application/x-sharedlib" {
-			http.Error(w, "content-type not allowed", http.StatusBadRequest)
+			http.Error(w, "content-type not acceptable (just .so, .dll or .app)", http.StatusNotAcceptable)
 			return
 		}
 
