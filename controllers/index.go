@@ -36,8 +36,8 @@ type Os struct {
 // @Tags sync
 // @Description Retrieve list plugin with all versions
 // @Produce json
-// @Success 200 {array} Uploader
-// @Router / [get]
+// @Success 200 {array} Summary
+// @Router /summary [get]
 func Index(w http.ResponseWriter, r *http.Request)  {
 
 	sum := Summary{ UpdatedAt: "2021-06-14 16:04:16" }

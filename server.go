@@ -20,7 +20,7 @@ func UpServer()  {
 
 
 	r := mux.NewRouter()
-	r.HandleFunc("/", controllers.Index).Methods("GET")
+	r.HandleFunc("/summary", controllers.Index).Methods("GET")
 	r.PathPrefix("/download/").Handler(http.StripPrefix("/download/", http.FileServer(http.Dir(dir))))
 	r.PathPrefix("/docs/").Handler(httpSwagger.WrapHandler)
 

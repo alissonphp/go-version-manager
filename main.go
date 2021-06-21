@@ -1,7 +1,7 @@
 package main
 
 // @title gmkernel plugins sync
-// @version 0.1
+// @version 1.0.1
 // @description Service to upload and syncronize plugins to gmkernel flow
 // @termsOfService http://swagger.io/terms/
 
