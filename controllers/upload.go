@@ -6,7 +6,6 @@ import (
 	_ "github.com/alisson/go-version-manager/docs"
 	"github.com/alisson/go-version-manager/utilities"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"os"
 )
@@ -72,16 +71,4 @@ func Upload(w http.ResponseWriter, r *http.Request)  {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	writeJsonFile(handler(r), h.Filename)
-}
-
-func writeJsonFile(u *Uploader, name string)  {
-
-	var filePath = u.Path + "infos.json"
-	u.Path = u.Path + name
-
-	file, _ := json.MarshalIndent(u, "", " ")
-	_ = ioutil.WriteFile(filePath, file, 0644)
-
 }
