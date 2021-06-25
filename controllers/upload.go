@@ -44,7 +44,7 @@ func handler(r *http.Request) *Uploader {
 // @Param file formData file true "plugin lib (.so, .dll or .app)"
 // @Param --VERSION header string true "plugin version, ex. 1.0.1"
 // @Param --OS header string true "platform - linux, windows or macos"
-// @Param --PLUGIN_ID header string true "id - com.pulse.641.nfe"
+// @Param --PLUGIN_ID header string true "id - keycloakauthplugin.nfe"
 // @Success 200 {object} Uploader
 // @Router /upload/ [post]
 func Upload(w http.ResponseWriter, r *http.Request)  {

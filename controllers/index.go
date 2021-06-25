@@ -11,7 +11,6 @@ import (
 )
 
 type Summary struct {
-	UpdatedAt string `json:"updated_at"`
 	Plugins []Plugin `json:"plugins"`
 }
 
@@ -40,7 +39,7 @@ type Os struct {
 // @Router /summary [get]
 func Index(w http.ResponseWriter, r *http.Request)  {
 
-	sum := Summary{ UpdatedAt: "2021-06-14 16:04:16" }
+	sum := Summary{}
 	for _, p := range utilities.ReadListDir("./download/plugins") {
 		var versions = getSortedPluginVersions(p.Name())
 		sum.Plugins = append(sum.Plugins, Plugin{

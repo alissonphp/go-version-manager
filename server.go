@@ -24,9 +24,12 @@ func UpServer()  {
 	r.PathPrefix("/download/").Handler(http.StripPrefix("/download/", http.FileServer(http.Dir(dir))))
 	r.PathPrefix("/docs/").Handler(httpSwagger.WrapHandler)
 
+	p := r.PathPrefix("/plugin").Subrouter()
+		p.HandleFunc("/{id}/{os}", controllers.Plugins).Methods("GET")
+
 	s := r.PathPrefix("/upload").Subrouter()
-	s.HandleFunc("/", controllers.Upload).Methods("POST")
-	s.Use(utilities.MimeTypeChecker)
+		s.HandleFunc("/", controllers.Upload).Methods("POST")
+		s.Use(utilities.MimeTypeChecker)
 
 	srv := &http.Server{
 		Handler:      r,
