@@ -33,6 +33,42 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/plugin/{id}/{os}": {
+            "get": {
+                "description": "Retrieve plugin infos",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sync"
+                ],
+                "summary": "Get plugin metadata from latest version",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Plugin id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Operation system kernel type",
+                        "name": "os",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/summary": {
             "get": {
                 "description": "Retrieve list plugin with all versions",
@@ -93,7 +129,7 @@ var doc = `{
                     },
                     {
                         "type": "string",
-                        "description": "id - com.pulse.641.nfe",
+                        "description": "id - keycloakauthplugin.nfe",
                         "name": "--PLUGIN_ID",
                         "in": "header",
                         "required": true
@@ -147,9 +183,6 @@ var doc = `{
                     "items": {
                         "$ref": "#/definitions/controllers.Plugin"
                     }
-                },
-                "updated_at": {
-                    "type": "string"
                 }
             }
         },

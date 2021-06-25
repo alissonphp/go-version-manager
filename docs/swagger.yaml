@@ -24,8 +24,6 @@ definitions:
         items:
           $ref: '#/definitions/controllers.Plugin'
         type: array
-      updated_at:
-        type: string
     type: object
   controllers.Uploader:
     properties:
@@ -60,6 +58,30 @@ info:
   title: gmkernel plugins sync
   version: 1.0.1
 paths:
+  /plugin/{id}/{os}:
+    get:
+      description: Retrieve plugin infos
+      parameters:
+      - description: Plugin id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Operation system kernel type
+        in: path
+        name: os
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      summary: Get plugin metadata from latest version
+      tags:
+      - sync
   /summary:
     get:
       description: Retrieve list plugin with all versions
@@ -96,7 +118,7 @@ paths:
         name: --OS
         required: true
         type: string
-      - description: id - com.pulse.641.nfe
+      - description: id - keycloakauthplugin.nfe
         in: header
         name: --PLUGIN_ID
         required: true
