@@ -113,7 +113,7 @@
                     },
                     {
                         "type": "string",
-                        "description": "id - com.pulse.641.nfe",
+                        "description": "id - keycloakauthplugin.nfe",
                         "name": "--PLUGIN_ID",
                         "in": "header",
                         "required": true

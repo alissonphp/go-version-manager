@@ -51,7 +51,7 @@ func checkEnv() string {
 		return server
 	}
 
-	err := os.Setenv("HOST", "localhost")
+	err := os.Setenv("HOST", "0.0.0.0")
 	if err != nil {
 		return ""
 	}

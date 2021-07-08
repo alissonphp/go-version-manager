@@ -1,14 +1,22 @@
 FROM golang AS builder
-MAINTAINER com.pulse
+MAINTAINER com.pulse.engineer
+
+RUN apt update -y && \
+    apt install -y upx
 
 WORKDIR /app
 COPY . /app
 
 RUN go get github.com/swaggo/swag/cmd/swag
 RUN go install . && \
-    go build -ldflags "-s -w"
+    swag init
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags "-s -w" -a -installsuffix cgo -o app .
+RUN upx -9 -q ./app
 
 FROM scratch
-COPY --from=builder /app/go-version-manager /
-CMD ["/go-version-manager"]
+COPY --from=builder /app/app /
+COPY --from=builder /app/download /download
+
 EXPOSE 8000
+
+CMD ["./app"]
